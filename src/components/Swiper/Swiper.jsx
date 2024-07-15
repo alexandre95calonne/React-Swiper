@@ -1,8 +1,14 @@
+// Swiper.jsx
 import React, { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import Card from "./Card";
+import { swipe } from "../../hooks/swipeUtils";
 
-const Swiper = ({ items, disableSuperLike = false }) => {
+const Swiper = ({
+  items,
+  disableSuperLike = false,
+  disablePopOver = false,
+}) => {
   const [cards, setCards] = useState(items);
   const [showInfo, setShowInfo] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(
@@ -10,21 +16,10 @@ const Swiper = ({ items, disableSuperLike = false }) => {
   );
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
-  const swipe = useCallback((direction, id) => {
-    setCards((prev) => {
-      const cardIndex = prev.findIndex((card) => card.id === id);
-      setCurrentImageIndex((current) => {
-        const newIndices = [...current];
-        if (cardIndex !== -1) {
-          newIndices[cardIndex] = 0;
-        }
-        return newIndices;
-      });
-      setShowInfo(false);
-      setCurrentCardIndex((prevIndex) => prevIndex + 1);
-      return prev.filter((card) => card.id !== id);
-    });
-  }, []);
+  const swipeHandler = useCallback(
+    swipe(setCards, setCurrentImageIndex, setShowInfo, setCurrentCardIndex),
+    []
+  );
 
   const nextImage = (index) => {
     setCurrentImageIndex((current) =>
@@ -51,7 +46,7 @@ const Swiper = ({ items, disableSuperLike = false }) => {
               key={card.id}
               item={card}
               index={index}
-              swipe={swipe}
+              swipe={swipeHandler}
               currentImageIndex={currentImageIndex}
               nextImage={nextImage}
               goToImage={goToImage}
@@ -59,6 +54,7 @@ const Swiper = ({ items, disableSuperLike = false }) => {
               toggleInfo={toggleInfo}
               isCurrent={index === currentCardIndex}
               disableSuperLike={disableSuperLike}
+              disablePopOver={disablePopOver}
             />
           ))
         ) : (

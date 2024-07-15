@@ -8,7 +8,7 @@ const data = [
       "https://d1jyxxz9imt9yb.cloudfront.net/person/1605/detail_image/mobile/LDC-High-Res-Headshot.jpg",
       "https://fr.web.img5.acsta.net/pictures/15/06/24/14/36/054680.jpg",
     ],
-    link: "https://leonardodicaprio.com/",
+    link: "https://fr.wikipedia.org/wiki/Leonardo_DiCaprio",
   },
   {
     id: 3,
@@ -19,7 +19,7 @@ const data = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Williams_S._RG18_%2817%29_%2841168711240%29.jpg/1200px-Williams_S._RG18_%2817%29_%2841168711240%29.jpg",
       "https://builtforathletes.com/cdn/shop/articles/Serena_Williams.jpg?v=1658840679",
     ],
-    link: "https://www.serenawilliams.com/",
+    link: "https://fr.wikipedia.org/wiki/Serena_Williams",
   },
   {
     id: 4,
@@ -30,7 +30,7 @@ const data = [
       "https://www.challenges.fr/assets/img/2021/04/29/cover-r4x3w1000-60b8f0b32aac5-25221-1490551-k2-k1-3450025-jpg.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elon_Musk_Colorado_2022_%28cropped2%29.jpg/640px-Elon_Musk_Colorado_2022_%28cropped2%29.jpg",
     ],
-    link: "https://twitter.com/elonmusk",
+    link: "https://fr.wikipedia.org/wiki/Elon_Musk",
   },
   {
     id: 5,
@@ -41,7 +41,7 @@ const data = [
       "https://images.rtl.fr/~c/770v513/rtl/www/1598315-taylor-swift-en-concert-le-17-mars-2023.jpg",
       "https://media.vogue.fr/photos/663d5e27791f370b2e79c72b/2:3/w_2560%2Cc_limit/GettyImages-2152249632.jpg",
     ],
-    link: "https://www.taylorswift.com/",
+    link: "https://fr.wikipedia.org/wiki/Taylor_Swift",
   },
   {
     id: 6,
@@ -53,7 +53,7 @@ const data = [
       "https://s.france24.com/media/display/d58b579c-6ab0-11ed-8c29-005056a90284/w:980/p:16x9/11-22-22%20Cristiano.jpg",
       "https://static.cnews.fr/sites/default/files/styles/image_750_422/public/football_ligue_des_champions_cristiano_ronaldo_arabie_saoudite_ligue_des_champions-taille1200_63b40fb5c9c68.jpg?itok=rCsRnLf7",
     ],
-    link: "https://www.cristianoronaldo.com/",
+    link: "https://fr.wikipedia.org/wiki/Cristiano_Ronaldo",
   },
 ];
 
