@@ -2,12 +2,12 @@ import React, { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import Card from "./Card";
 
-const Swiper = ({ items }) => {
+const Swiper = ({ items, disableSuperLike = false }) => {
   const [cards, setCards] = useState(items);
+  const [showInfo, setShowInfo] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(
     new Array(items.length).fill(0)
   );
-  const [showInfo, setShowInfo] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   const swipe = useCallback((direction, id) => {
@@ -58,6 +58,7 @@ const Swiper = ({ items }) => {
               showInfo={showInfo}
               toggleInfo={toggleInfo}
               isCurrent={index === currentCardIndex}
+              disableSuperLike={disableSuperLike}
             />
           ))
         ) : (

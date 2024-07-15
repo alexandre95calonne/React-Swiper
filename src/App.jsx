@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-gray-100">
       <div className="w-full max-w-md h-3/4">
-        <Swiper items={processedItems} />
+        <Swiper items={processedItems} disableSuperLike />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ const Card = ({
   showInfo,
   toggleInfo,
   isCurrent,
+  disableSuperLike,
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -178,12 +179,14 @@ const Card = ({
               onClick={() => autoSwipe("left")}
               size={35}
             />
-            <Icon
-              icon="mdi:star"
-              className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
-              onClick={() => autoSwipe("up")}
-              size={35}
-            />
+            {!disableSuperLike && (
+              <Icon
+                icon="mdi:star"
+                className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
+                onClick={() => autoSwipe("up")}
+                size={35}
+              />
+            )}
             <Icon
               icon="mdi:heart"
               className="text-green-500 border-2 border-green-500 rounded-full p-2 cursor-pointer"
