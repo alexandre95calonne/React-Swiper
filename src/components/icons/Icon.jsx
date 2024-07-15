@@ -1,15 +1,15 @@
 import React from "react";
-import { Icon } from "@iconify/react";
+import { Icon as IconifyIcon } from "@iconify/react";
 
-const IconButton = ({ icon, onClick }) => {
+const Icon = ({ icon, onClick, className, size = 24 }) => {
   return (
     <button
-      className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center"
+      className={`flex items-center justify-center ${className}`}
       onClick={onClick}
     >
-      <Icon icon={icon} width="24" height="24" />
+      <IconifyIcon icon={icon} width={size} height={size} />
     </button>
   );
 };
 
-export default IconButton;
+export default Icon;

@@ -5,7 +5,7 @@ import {
   useTransform,
   useAnimation,
 } from "framer-motion";
-import IconButton from "../icons/Icon";
+import Icon from "../icons/Icon";
 
 const Card = ({
   item,
@@ -85,6 +85,7 @@ const Card = ({
         }
       }}
       className="absolute cursor-pointer rounded-lg shadow-lg overflow-hidden"
+      onClick={!showInfo ? () => nextImage(index) : undefined}
       initial={{ x: 0, y: 0, scale: 1 }}
       animate={controls}
       transition={{ type: "spring", stiffness: 120 }}
@@ -99,38 +100,97 @@ const Card = ({
         ></div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70">
           <div className="absolute left-1/2 top-2 flex -translate-x-1/2 transform space-x-2">
-            {item.images.map((_, imgIndex) => (
-              <div
-                key={imgIndex}
-                className={`h-2 w-9 rounded-full ${
-                  imgIndex === currentImageIndex[index]
-                    ? "bg-white"
-                    : "bg-gray-500"
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goToImage(index, imgIndex);
-                }}
-              ></div>
-            ))}
+            {item.images && item.images.length > 1 && (
+              <div className="absolute left-1/2 top-2 flex -translate-x-1/2 transform space-x-2">
+                {item.images.map((_, imgIndex) => (
+                  <div
+                    key={imgIndex}
+                    className={`h-2 w-9 rounded-full ${
+                      imgIndex === currentImageIndex[index]
+                        ? "bg-white"
+                        : "bg-gray-500"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToImage(index, imgIndex);
+                    }}
+                  ></div>
+                ))}
+              </div>
+            )}
           </div>
+
           {!showInfo ? (
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-              <h3 className="text-xl font-bold">{item.name}</h3>
-              <p className="text-lg">{item.age} years old</p>
-              <p className="text-base">{item.bio}</p>
+            <div className="absolute bottom-24 left-0 right-0 p-4 text-white">
+              <div className="">
+                <div className="flex flex-row justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold">{item.name}</h3>
+                    <p className="text-lg">{item.age} years old</p>
+                  </div>
+
+                  <div>
+                    <button
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleInfo();
+                      }}
+                      aria-label="Toggle Info" // Ajout de aria-label
+                      title="Toggle Info" // Ajout de title
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="h-5 w-5 text-black"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 16h-1v-4h-1m0-4h.01M12 19h.01M12 11h.01M12 8h.01"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <p className="text-base truncate">{item.bio}</p>
+              </div>
             </div>
           ) : (
             <div
               className="absolute bottom-0 left-0 right-0 overflow-scroll rounded-t-lg bg-white/90 p-4 pb-11 text-black shadow-lg"
-              style={{ height: "80%" }}
+              style={{ height: "60%" }}
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-bold">{item.name}</h3>
               <p className="text-lg">{item.age} years old</p>
-              <p className="text-base">{item.bio}</p>
+              <p className="text-base truncate">{item.bio}</p>
             </div>
           )}
+
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-8">
+            <Icon
+              icon="mdi:close"
+              className="text-red-500 border-2 border-red-500 rounded-full p-2 cursor-pointer"
+              onClick={() => autoSwipe("left")}
+              size={35}
+            />
+            <Icon
+              icon="mdi:star"
+              className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
+              onClick={() => autoSwipe("up")}
+              size={35}
+            />
+            <Icon
+              icon="mdi:heart"
+              className="text-green-500 border-2 border-green-500 rounded-full p-2 cursor-pointer"
+              onClick={() => autoSwipe("right")}
+              size={35}
+            />
+          </div>
         </div>
       </div>
     </motion.div>

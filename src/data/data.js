@@ -47,8 +47,9 @@ const data = [
     id: 6,
     name: "Cristiano Ronaldo",
     age: 39,
-    bio: "World-renowned footballer and global sports icon",
+    bio: "World-renowned footballer and global sports icon. He is a former professional footballer who was a key player in the world's most popular club, Juventus, and the Portugal national team.",
     images: [
+      "https://i.pinimg.com/736x/7c/62/d1/7c62d1e1ee4b78b0180a61b6750077bb.jpg",
       "https://s.france24.com/media/display/d58b579c-6ab0-11ed-8c29-005056a90284/w:980/p:16x9/11-22-22%20Cristiano.jpg",
       "https://static.cnews.fr/sites/default/files/styles/image_750_422/public/football_ligue_des_champions_cristiano_ronaldo_arabie_saoudite_ligue_des_champions-taille1200_63b40fb5c9c68.jpg?itok=rCsRnLf7",
     ],

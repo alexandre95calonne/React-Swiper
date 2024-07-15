@@ -45,20 +45,26 @@ const Swiper = ({ items }) => {
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       <AnimatePresence>
-        {cards.map((card, index) => (
-          <Card
-            key={card.id}
-            item={card}
-            index={index}
-            swipe={swipe}
-            currentImageIndex={currentImageIndex}
-            nextImage={nextImage}
-            goToImage={goToImage}
-            showInfo={showInfo}
-            toggleInfo={toggleInfo}
-            isCurrent={index === currentCardIndex}
-          />
-        ))}
+        {cards.length > 0 ? (
+          cards.map((card, index) => (
+            <Card
+              key={card.id}
+              item={card}
+              index={index}
+              swipe={swipe}
+              currentImageIndex={currentImageIndex}
+              nextImage={nextImage}
+              goToImage={goToImage}
+              showInfo={showInfo}
+              toggleInfo={toggleInfo}
+              isCurrent={index === currentCardIndex}
+            />
+          ))
+        ) : (
+          <div className="text-center text-2xl font-bold text-gray-600">
+            No more cards to swipe :/
+          </div>
+        )}
       </AnimatePresence>
     </div>
   );
