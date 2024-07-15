@@ -1,8 +1,8 @@
 // Swiper.jsx
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Card from "./Card";
-import { swipe } from "../../hooks/swipeUtils";
+import { swipe, autoSwipe } from "../../hooks/swipeUtils";
 
 const Swiper = ({
   items,
@@ -14,10 +14,9 @@ const Swiper = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(
     new Array(items.length).fill(0)
   );
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   const swipeHandler = useCallback(
-    swipe(setCards, setCurrentImageIndex, setShowInfo, setCurrentCardIndex),
+    swipe(setCards, setCurrentImageIndex, setShowInfo),
     []
   );
 
@@ -37,6 +36,57 @@ const Swiper = ({
 
   const toggleInfo = () => setShowInfo(!showInfo);
 
+  // Get the current (topmost) card
+  const currentCard = cards[cards.length - 1];
+
+  // Create a ref for the current card's controls
+  const currentCardControlsRef = React.useRef(null);
+
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (!currentCard || !currentCardControlsRef.current) return;
+
+      switch (event.key) {
+        case "ArrowLeft":
+          autoSwipe(
+            currentCardControlsRef.current,
+            swipeHandler,
+            currentCard.id,
+            currentCard.link
+          )("left");
+          break;
+        case "ArrowUp":
+          if (!disableSuperLike) {
+            autoSwipe(
+              currentCardControlsRef.current,
+              swipeHandler,
+              currentCard.id,
+              currentCard.link
+            )("up");
+          }
+          break;
+        case "ArrowRight":
+          autoSwipe(
+            currentCardControlsRef.current,
+            swipeHandler,
+            currentCard.id,
+            currentCard.link
+          )("right");
+          break;
+        default:
+          break;
+      }
+    },
+    [currentCard, swipeHandler, disableSuperLike]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       <AnimatePresence>
@@ -52,9 +102,12 @@ const Swiper = ({
               goToImage={goToImage}
               showInfo={showInfo}
               toggleInfo={toggleInfo}
-              isCurrent={index === currentCardIndex}
+              isCurrent={index === cards.length - 1}
               disableSuperLike={disableSuperLike}
               disablePopOver={disablePopOver}
+              controlsRef={
+                index === cards.length - 1 ? currentCardControlsRef : null
+              }
             />
           ))
         ) : (

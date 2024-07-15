@@ -11,6 +11,18 @@ const data = [
     link: "https://fr.wikipedia.org/wiki/Leonardo_DiCaprio",
   },
   {
+    id: 2,
+    name: "Brad Pitt",
+    age: 55,
+    bio: "American actor and film producer",
+    images: [
+      "https://media.vogue.fr/photos/5d721affafa3460008319a82/master/w_1600%2Cc_limit/GettyImages-1150762138.jpg",
+      "https://goldenglobes.com/wp-content/uploads/2023/10/brad-pitt_03_paramount-pictures.jpg",
+      "https://cache.marieclaire.fr/data/photo/w1000_ci/1jw/brad-pitt.jpg",
+    ],
+    link: "https://fr.wikipedia.org/wiki/Brad_Pitt",
+  },
+  {
     id: 3,
     name: "Serena Williams",
     age: 42,
@@ -54,6 +66,29 @@ const data = [
       "https://static.cnews.fr/sites/default/files/styles/image_750_422/public/football_ligue_des_champions_cristiano_ronaldo_arabie_saoudite_ligue_des_champions-taille1200_63b40fb5c9c68.jpg?itok=rCsRnLf7",
     ],
     link: "https://fr.wikipedia.org/wiki/Cristiano_Ronaldo",
+  },
+  {
+    id: 7,
+    name: "Jennifer Aniston",
+    age: 43,
+    bio: "American actress and producer",
+    images: [
+      "https://www.gala.fr/imgre/fit/~1~gal~2023~10~30~abdc2873-7da5-424d-b5b2-faafc400c39e.jpeg/2625x3500/quality/80/jennifer-aniston.jpeg",
+      "https://fr.web.img5.acsta.net/c_310_420/pictures/16/05/24/16/03/505445.jpg",
+    ],
+    link: "https://fr.wikipedia.org/wiki/Jennifer_Aniston",
+  },
+  {
+    id: 8,
+    name: "Jean Dujardin",
+    age: 55,
+    bio: "French writer and novelist",
+    images: [
+      "https://images.rtl.fr/~c/770v513/rtl/www/1120784-jean-dujardin-n-est-pret-de-tourner-un-nouveau-oss-117.jpg",
+      "https://www.gala.fr/imgre/fit/~1~gal~2024~01~24~28cfa36a-6491-420d-afe1-f5fcb10057fa.jpeg/1048x798/quality/80/jean-dujardin.jpeg",
+      ,
+    ],
+    link: "https://fr.wikipedia.org/wiki/Jean_Dujardin",
   },
 ];
 

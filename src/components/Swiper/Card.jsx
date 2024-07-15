@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   motion,
   useMotionValue,
@@ -20,6 +20,7 @@ const Card = ({
   isCurrent,
   disableSuperLike,
   disablePopOver,
+  controlsRef,
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -31,21 +32,13 @@ const Card = ({
     [controls, swipe, item.id, item.link]
   );
 
-  useEffect(() => {
-    if (isCurrent) {
-      const handleKeyDown = (event) => {
-        if (event.key === "ArrowRight") {
-          autoSwipeHandler("right");
-        } else if (event.key === "ArrowLeft") {
-          autoSwipeHandler("left");
-        } else if (event.key === "ArrowUp") {
-          autoSwipeHandler("up");
-        }
-      };
-      window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
+  React.useEffect(() => {
+    if (controlsRef) {
+      controlsRef.current = controls;
     }
-  }, [isCurrent, autoSwipeHandler]);
+  }, [controlsRef, controls]);
+
+  // The useEffect hook for keyboard events has been removed
 
   return (
     <motion.div
