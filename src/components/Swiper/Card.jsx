@@ -20,6 +20,7 @@ const Card = ({
   isCurrent,
   disableSuperLike,
   disablePopOver,
+  disableKeyboards,
   controlsRef,
 }) => {
   const x = useMotionValue(0);

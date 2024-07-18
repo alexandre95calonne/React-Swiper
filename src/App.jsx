@@ -12,8 +12,6 @@ function App() {
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-gray-100">
       <div className="w-full max-w-[90dvh] h-[90dvh] flex flex-col">
-        {" "}
-        {/* Changed height and added flex */}
         <Swiper items={processedItems} />
       </div>
     </div>
