@@ -86,9 +86,30 @@ const data = [
     images: [
       "https://images.rtl.fr/~c/770v513/rtl/www/1120784-jean-dujardin-n-est-pret-de-tourner-un-nouveau-oss-117.jpg",
       "https://www.gala.fr/imgre/fit/~1~gal~2024~01~24~28cfa36a-6491-420d-afe1-f5fcb10057fa.jpeg/1048x798/quality/80/jean-dujardin.jpeg",
-      ,
     ],
     link: "https://fr.wikipedia.org/wiki/Jean_Dujardin",
+  },
+  {
+    id: 9,
+    name: "Jake Sparrow",
+    age: 30,
+    bio: "American actor and comedian",
+    images: [
+      "https://www.ed92.org/wp-content/uploads/2021/08/pirates-des-caraibes-5-photo-521b230a77246.jpg",
+      "https://www.premiere.fr/sites/default/files/styles/scale_crop_border_1280x720/public/2019-04/Collage%20sans%20titre%284%29_1.jpg",
+    ],
+    link: "https://fr.wikipedia.org/wiki/Jake_Sparrow",
+  },
+  {
+    id: 10,
+    name: "Alexandre Lamy",
+    age: 35,
+    bio: "French actor and comedian",
+    images: [
+      "https://www.gala.fr/imgre/fit/~1~gal~2023~09~19~7dd356a8-268b-4422-a6a3-5da2ff982932.jpeg/3806x2884/quality/80/alexandra-lamy.jpeg",
+      "https://static1.purepeople.com/articles/7/52/05/87/@/7649877-alexandra-lamy-au-photocall-des-arrivees-580x0-2.jpg",
+    ],
+    link: "https://fr.wikipedia.org/wiki/Alexandre_Lamy",
   },
 ];
 

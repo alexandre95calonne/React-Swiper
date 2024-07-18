@@ -20,6 +20,7 @@ const Card = ({
   isCurrent,
   disableSuperLike,
   disablePopOver,
+  disableKeyboards,
   controlsRef,
 }) => {
   const x = useMotionValue(0);
@@ -34,11 +35,12 @@ const Card = ({
 
   React.useEffect(() => {
     if (controlsRef) {
-      controlsRef.current = controls;
+      controlsRef.current = {
+        controls,
+        toggleInfo,
+      };
     }
-  }, [controlsRef, controls]);
-
-  // The useEffect hook for keyboard events has been removed
+  }, [controlsRef, controls, toggleInfo]);
 
   return (
     <motion.div
@@ -137,7 +139,7 @@ const Card = ({
             </div>
           ) : (
             <div
-              className="absolute bottom-0 left-0 right-0 overflow-scroll rounded-t-lg bg-white/90 p-4 pb-11 text-black shadow-lg cursor-default"
+              className="absolute bottom-0 left-0 right-0 overflow-scroll rounded-t-lg bg-white/95 p-4 pb-11 text-black shadow-lg cursor-default"
               style={{ height: "60%" }}
               onClick={(e) => e.stopPropagation()}
             >
