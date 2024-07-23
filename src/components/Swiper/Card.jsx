@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -27,9 +27,64 @@ const Card = ({
   const y = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-30, 30]);
   const controls = useAnimation();
+  const [keyboardSwipeDirection, setKeyboardSwipeDirection] = useState(null);
+  const [isKeyboardSwipe, setIsKeyboardSwipe] = useState(false);
+
+  const getBoxShadow = useCallback(() => {
+    if (isKeyboardSwipe) {
+      switch (keyboardSwipeDirection) {
+        case "left":
+          return `0 0 20px rgba(255, 0, 0, 1)`; // Red for left swipe
+        case "right":
+          return `0 0 20px rgba(0, 255, 0, 1)`; // Green for right swipe
+        case "up":
+          return `0 0 20px rgba(0, 0, 255, 1)`; // Blue for up swipe (super-like)
+        default:
+          return "none";
+      }
+    }
+
+    const xValue = x.get();
+    const yValue = y.get();
+
+    const upSwipeThreshold = -35;
+    const horizontalThreshold = 20;
+
+    if (yValue < upSwipeThreshold) {
+      const intensity = Math.min(Math.abs(yValue) / 150, 1);
+      return `0 0 20px rgba(0, 0, 255, ${intensity})`;
+    } else if (xValue < -horizontalThreshold) {
+      const intensity = Math.min(Math.abs(xValue) / 200, 1);
+      return `0 0 20px rgba(255, 0, 0, ${intensity})`;
+    } else if (xValue > horizontalThreshold) {
+      const intensity = Math.min(xValue / 200, 1);
+      return `0 0 20px rgba(0, 255, 0, ${intensity})`;
+    } else {
+      return "none";
+    }
+  }, [x, y, isKeyboardSwipe, keyboardSwipeDirection]);
+
+  const boxShadow = useTransform([x, y], () => getBoxShadow());
+
+  const iconHoverEffect = {
+    scale: 1.05,
+    transition: { duration: 0.2 },
+  };
 
   const autoSwipeHandler = useCallback(
-    autoSwipe(controls, swipe, item.id, item.link),
+    (direction) => {
+      setIsKeyboardSwipe(true);
+      setKeyboardSwipeDirection(direction);
+      autoSwipe(
+        controls,
+        swipe,
+        item.id,
+        item.link
+      )(direction).finally(() => {
+        setIsKeyboardSwipe(false);
+        setKeyboardSwipeDirection(null);
+      });
+    },
     [controls, swipe, item.id, item.link]
   );
 
@@ -38,9 +93,10 @@ const Card = ({
       controlsRef.current = {
         controls,
         toggleInfo,
+        autoSwipeHandler,
       };
     }
-  }, [controlsRef, controls, toggleInfo]);
+  }, [controlsRef, controls, toggleInfo, autoSwipeHandler]);
 
   return (
     <motion.div
@@ -51,6 +107,7 @@ const Card = ({
         x,
         y,
         rotate,
+        boxShadow,
         height: "70vh",
         width: "500px",
         zIndex: 1000 + index,
@@ -121,7 +178,7 @@ const Card = ({
                   </div>
 
                   {!disablePopOver && (
-                    <div>
+                    <motion.div whileHover={iconHoverEffect}>
                       <Icon
                         icon="mdi:information-outline"
                         className="text-white"
@@ -131,7 +188,7 @@ const Card = ({
                           toggleInfo();
                         }}
                       />
-                    </div>
+                    </motion.div>
                   )}
                 </div>
                 <p className="text-base truncate">{item.bio}</p>
@@ -150,35 +207,43 @@ const Card = ({
           )}
 
           <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-8">
-            <Icon
-              icon="mdi:close"
-              className="text-red-500 border-2 border-red-500 rounded-full p-2 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                autoSwipeHandler("left");
-              }}
-              size={35}
-            />
-            {!disableSuperLike && (
+            <motion.div whileHover={iconHoverEffect}>
               <Icon
-                icon="mdi:star"
-                className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
+                icon="mdi:close"
+                className="text-red-500 border-2 border-red-500 rounded-full p-2 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  autoSwipeHandler("up");
+                  autoSwipeHandler("left");
                 }}
                 size={35}
               />
+            </motion.div>
+
+            {!disableSuperLike && (
+              <motion.div whileHover={iconHoverEffect}>
+                <Icon
+                  icon="mdi:star"
+                  className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    autoSwipeHandler("up");
+                  }}
+                  size={35}
+                />
+              </motion.div>
             )}
-            <Icon
-              icon="mdi:heart"
-              className="text-green-500 border-2 border-green-500 rounded-full p-2 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                autoSwipeHandler("right");
-              }}
-              size={35}
-            />
+
+            <motion.div whileHover={iconHoverEffect}>
+              <Icon
+                icon="mdi:heart"
+                className="text-green-500 border-2 border-green-500 rounded-full p-2 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  autoSwipeHandler("right");
+                }}
+                size={35}
+              />
+            </motion.div>
           </div>
         </div>
       </div>

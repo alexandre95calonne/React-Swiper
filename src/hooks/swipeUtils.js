@@ -19,7 +19,7 @@ export const swipe =
 export const autoSwipe =
   (controls, swipe, itemId, itemLink) => async (direction) => {
     const xMove = direction === "right" ? 700 : -700;
-    const yMove = direction === "up" ? -600 : -100;
+    const yMove = direction === "up" ? -600 : -80;
     await controls.start({
       x: xMove,
       y: yMove,
