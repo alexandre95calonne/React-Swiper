@@ -2,7 +2,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Card from "./Card";
-import { swipe, autoSwipe } from "../../hooks/swipeUtils";
+import { swipe } from "../../hooks/swipeUtils";
+import Icon from "../icons/Icon";
+import { motion } from "framer-motion";
 
 const Swiper = ({
   items,
@@ -41,59 +43,38 @@ const Swiper = ({
 
   const toggleSectionVisibility = () => setShowSection(!showSection);
 
-  // Get the current (topmost) card
   const currentCard = cards[cards.length - 1];
 
-  // Create a ref for the current card's controls
   const currentCardControlsRef = React.useRef(null);
 
   const handleKeyDown = useCallback(
     (event) => {
-      if (disableKeyboards) return; // Add this line to disable keyboard actions
+      if (disableKeyboards) return;
       if (!currentCard || !currentCardControlsRef.current) return;
 
       switch (event.key) {
         case "ArrowLeft":
-          autoSwipe(
-            currentCardControlsRef.current.controls,
-            swipeHandler,
-            currentCard.id,
-            currentCard.link
-          )("left");
+          currentCardControlsRef.current.autoSwipeHandler("left");
+          break;
+        case "ArrowRight":
+          currentCardControlsRef.current.autoSwipeHandler("right");
+          break;
+        case "Enter":
+          if (!disableSuperLike) {
+            currentCardControlsRef.current.autoSwipeHandler("up");
+          }
           break;
         case "ArrowUp":
-          // Toggle info open
           if (!showInfo) {
             currentCardControlsRef.current.toggleInfo();
           }
           break;
         case "ArrowDown":
-          // Close info if it's open
           if (showInfo) {
             currentCardControlsRef.current.toggleInfo();
           }
           break;
-        case "ArrowRight":
-          autoSwipe(
-            currentCardControlsRef.current.controls,
-            swipeHandler,
-            currentCard.id,
-            currentCard.link
-          )("right");
-          break;
-        case "Enter":
-          // Perform super-like (swipe to top)
-          if (!disableSuperLike) {
-            autoSwipe(
-              currentCardControlsRef.current.controls,
-              swipeHandler,
-              currentCard.id,
-              currentCard.link
-            )("up");
-          }
-          break;
-        case " ": // Space key
-          // Go to next image
+        case " ":
           nextImage(cards.length - 1);
           break;
         default:
@@ -102,7 +83,6 @@ const Swiper = ({
     },
     [
       currentCard,
-      swipeHandler,
       showInfo,
       disableSuperLike,
       disableKeyboards,
@@ -150,114 +130,53 @@ const Swiper = ({
           )}
         </AnimatePresence>
       </div>
-      {!hideKeyboardsActions && ( // Add this condition to hide the entire section
+      {!hideKeyboardsActions && (
         <div className="mt-4 w-full">
           {showSection && (
-            <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
-              <button
-                className="reverse-button h-8 px-2"
-                onClick={toggleSectionVisibility}
-              >
-                Masquer
-              </button>
-              <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
+            <div className="hidden md:flex flex-wrap justify-between items-center gap-2 text-sm">
+              <div className="flex justify-center">
+                <motion.button
+                  className="bg-black text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors duration-300 hover:brightness-125"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={toggleSectionVisibility}
                 >
-                  <g fill="currentColor">
-                    <path d="m11.948 14.829l-1.414 1.414L6.29 12l4.243-4.243l1.414 1.415L10.12 11h7.537v2H10.12z"></path>
-                    <path
-                      fillRule="evenodd"
-                      d="M23 19a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V5a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4zm-4 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2"
-                      clipRule="evenodd"
-                    ></path>
-                  </g>
-                </svg>
+                  Masquer
+                </motion.button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Icon icon="gg:arrow-left-r" />
                 <p className="text-base">Non</p>
               </div>
               <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                >
-                  <g fill="currentColor">
-                    <path d="m12.052 14.829l1.414 1.414L17.71 12l-4.243-4.243l-1.414 1.415L13.88 11H6.343v2h7.537z"></path>
-                    <path
-                      fillRule="evenodd"
-                      d="M1 19a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4zm4 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2"
-                      clipRule="evenodd"
-                    ></path>
-                  </g>
-                </svg>
+                <Icon icon="gg:arrow-right-r" />
                 <p className="text-base">Like</p>
               </div>
               <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  >
-                    <rect width={18} height={18} x={3} y={3} rx={2}></rect>
-                    <path d="M12 8v8m-4-4l4 4l4-4"></path>
-                  </g>
-                </svg>
+                <Icon icon="gg:arrow-up-r" />
                 <p className="text-base">Voir les détails</p>
               </div>
               <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 48 48"
-                >
-                  <g
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={4}
-                  >
-                    <path d="M44 44V4H24v16H4v24z"></path>
-                    <path d="m21 28l-4 4l4 4"></path>
-                    <path d="M34 23v9H17"></path>
-                  </g>
-                </svg>
+                <Icon icon="icon-park-outline:enter-key" />
                 <p className="text-base">Acheter</p>
               </div>
               <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                >
-                  <path fill="currentColor" d="M4 15V9h2v4h12V9h2v6z"></path>
-                </svg>
+                <Icon icon="mdi:keyboard-space" />
                 <p className="text-base">Photo suivante</p>
               </div>
             </div>
           )}
           {!showSection && (
             <div className="flex justify-center">
-              <button
-                className="reverse-button h-8 px-2"
+              <motion.button
+                className="bg-black text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors duration-300 hover:brightness-125"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={toggleSectionVisibility}
               >
                 Afficher
-              </button>
+              </motion.button>
             </div>
           )}
         </div>
