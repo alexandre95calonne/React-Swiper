@@ -25,7 +25,7 @@ const Card = ({
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-30, 30]);
+  const rotate = useTransform(x, [-100, 100], [-15, 15]);
   const controls = useAnimation();
   const [keyboardSwipeDirection, setKeyboardSwipeDirection] = useState(null);
   const [isKeyboardSwipe, setIsKeyboardSwipe] = useState(false);
@@ -34,11 +34,11 @@ const Card = ({
     if (isKeyboardSwipe) {
       switch (keyboardSwipeDirection) {
         case "left":
-          return `0 0 20px rgba(255, 0, 0, 1)`; // Red for left swipe
+          return `0 0 20px rgba(255, 0, 0, 1)`;
         case "right":
-          return `0 0 20px rgba(0, 255, 0, 1)`; // Green for right swipe
+          return `0 0 20px rgba(0, 255, 0, 1)`;
         case "up":
-          return `0 0 20px rgba(0, 0, 255, 1)`; // Blue for up swipe (super-like)
+          return `0 0 20px rgba(0, 0, 255, 1)`;
         default:
           return "none";
       }
@@ -47,8 +47,8 @@ const Card = ({
     const xValue = x.get();
     const yValue = y.get();
 
-    const upSwipeThreshold = -35;
-    const horizontalThreshold = 20;
+    const upSwipeThreshold = -75; // Changed from -35 to -75
+    const horizontalThreshold = 100; // Changed from 20 to 100
 
     if (yValue < upSwipeThreshold) {
       const intensity = Math.min(Math.abs(yValue) / 150, 1);
@@ -100,31 +100,31 @@ const Card = ({
 
   return (
     <motion.div
+      layoutId={`card-${item.id}`}
       drag
       dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-      dragElastic={0.5}
+      dragElastic={0.45}
+      dragMomentum={false}
       style={{
         x,
         y,
         rotate,
         boxShadow,
-        height: "70vh",
-        width: "500px",
         zIndex: 1000 + index,
       }}
       onDragEnd={(event, info) => {
         const offsetX = info.offset.x;
         const offsetY = info.offset.y;
-        if (offsetX < -200) {
-          swipe("left", item.id);
-        } else if (offsetX > 200) {
-          swipe("right", item.id);
-        } else if (offsetY < -150) {
+        if (offsetY < -75) {
           window.open(item.link, "_blank");
           swipe("up", item.id);
+        } else if (offsetX < -100) {
+          swipe("left", item.id);
+        } else if (offsetX > 100) {
+          swipe("right", item.id);
         }
       }}
-      className="absolute cursor-pointer rounded-lg shadow-lg overflow-hidden"
+      className="absolute cursor-pointer rounded-lg shadow-lg overflow-hidden w-[90vw] sm:w-[500px] h-[60vh] md:h-[70vh]"
       onClick={() => {
         if (showInfo) {
           toggleInfo();
@@ -134,7 +134,7 @@ const Card = ({
       }}
       initial={{ x: 0, y: 0, scale: 1 }}
       animate={controls}
-      transition={{ type: "spring", stiffness: 120 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <div className="relative h-full w-full">
         <div
@@ -206,7 +206,7 @@ const Card = ({
             </div>
           )}
 
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-8">
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-8 cursor-default">
             <motion.div whileHover={iconHoverEffect}>
               <Icon
                 icon="mdi:close"

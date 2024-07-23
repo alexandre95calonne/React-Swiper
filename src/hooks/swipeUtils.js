@@ -20,13 +20,20 @@ export const autoSwipe =
   (controls, swipe, itemId, itemLink) => async (direction) => {
     const xMove = direction === "right" ? 700 : -700;
     const yMove = direction === "up" ? -600 : -80;
+
+    // Check if the screen width is less than 768px
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const swipeDuration = isMobile ? 0.7 : 0.4;
+
     await controls.start({
       x: xMove,
       y: yMove,
       rotate: direction === "right" ? 30 : -30,
-      transition: { duration: 0.4 },
+      transition: { duration: swipeDuration },
     });
+
     swipe(direction, itemId);
+
     if (direction === "up" && itemLink) {
       setTimeout(() => {
         window.open(itemLink, "_blank");

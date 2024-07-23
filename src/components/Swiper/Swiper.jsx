@@ -133,7 +133,7 @@ const Swiper = ({
       {!hideKeyboardsActions && (
         <div className="mt-4 w-full">
           {showSection && (
-            <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
+            <div className="hidden md:flex flex-wrap justify-between items-center gap-2 text-sm">
               <div className="flex justify-center">
                 <motion.button
                   className="bg-black text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors duration-300 hover:brightness-125"
