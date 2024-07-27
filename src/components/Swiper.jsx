@@ -2,8 +2,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Card from "./Card";
-import { swipe } from "../../hooks/swipeUtils";
-import Icon from "../icons/Icon";
+import { swipe } from "../hooks/swipeUtils";
+import Icon from "./icons/Icon";
 import { motion } from "framer-motion";
 
 const Swiper = ({
