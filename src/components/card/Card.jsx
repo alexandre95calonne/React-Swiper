@@ -1,18 +1,24 @@
 // Card.jsx
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   motion,
   useMotionValue,
   useTransform,
   useAnimation,
 } from "framer-motion";
-import Icon from "./icons/Icon";
-import { autoSwipe } from "../hooks/swipeUtils";
+import Icon from "../icons/Icon";
+import {
+  autoSwipe,
+  getBoxShadow,
+  handleDragEnd,
+  iconHoverEffect,
+} from "../../hooks/CardUtils";
 import CardImages from "./CardImages";
 import CardTitle from "./CardTitlte";
 import CardSubtitle from "./CardSubtitle";
 import CardDescription from "./CardDescription";
 import CardDetails from "./CardDetails";
+import CardActions from "./CardActions";
 
 const Card = ({
   item,
@@ -36,46 +42,9 @@ const Card = ({
   const [keyboardSwipeDirection, setKeyboardSwipeDirection] = useState(null);
   const [isKeyboardSwipe, setIsKeyboardSwipe] = useState(false);
 
-  const getBoxShadow = useCallback(() => {
-    if (isKeyboardSwipe) {
-      switch (keyboardSwipeDirection) {
-        case "left":
-          return `0 0 20px rgba(255, 0, 0, 1)`;
-        case "right":
-          return `0 0 20px rgba(0, 255, 0, 1)`;
-        case "up":
-          return `0 0 20px rgba(0, 0, 255, 1)`;
-        default:
-          return "none";
-      }
-    }
-
-    const xValue = x.get();
-    const yValue = y.get();
-
-    const upSwipeThreshold = -75;
-    const horizontalThreshold = 100;
-
-    if (yValue < upSwipeThreshold) {
-      const intensity = Math.min(Math.abs(yValue) / 150, 1);
-      return `0 0 20px rgba(0, 0, 255, ${intensity})`;
-    } else if (xValue < -horizontalThreshold) {
-      const intensity = Math.min(Math.abs(xValue) / 200, 1);
-      return `0 0 20px rgba(255, 0, 0, ${intensity})`;
-    } else if (xValue > horizontalThreshold) {
-      const intensity = Math.min(xValue / 200, 1);
-      return `0 0 20px rgba(0, 255, 0, ${intensity})`;
-    } else {
-      return "none";
-    }
-  }, [x, y, isKeyboardSwipe, keyboardSwipeDirection]);
-
-  const boxShadow = useTransform([x, y], () => getBoxShadow());
-
-  const iconHoverEffect = {
-    scale: 1.05,
-    transition: { duration: 0.2 },
-  };
+  const boxShadow = useTransform([x, y], () =>
+    getBoxShadow(x, y, isKeyboardSwipe, keyboardSwipeDirection)
+  );
 
   const autoSwipeHandler = useCallback(
     (direction) => {
@@ -94,7 +63,7 @@ const Card = ({
     [controls, swipe, item.id, item.link]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (controlsRef) {
       controlsRef.current = {
         controls,
@@ -118,18 +87,7 @@ const Card = ({
         boxShadow,
         zIndex: 1000 + index,
       }}
-      onDragEnd={(event, info) => {
-        const offsetX = info.offset.x;
-        const offsetY = info.offset.y;
-        if (offsetY < -75) {
-          window.open(item.link, "_blank");
-          swipe("up", item.id);
-        } else if (offsetX < -100) {
-          swipe("left", item.id);
-        } else if (offsetX > 100) {
-          swipe("right", item.id);
-        }
-      }}
+      onDragEnd={(event, info) => handleDragEnd(event, info, item, swipe)}
       className="absolute cursor-pointer rounded-lg shadow-lg overflow-hidden w-[90vw] sm:w-[500px] h-[60vh] md:h-[70vh]"
       onClick={() => {
         if (showInfo) {
@@ -178,45 +136,10 @@ const Card = ({
             description={item.bio}
           />
         )}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-8 cursor-default">
-          <motion.div whileHover={iconHoverEffect}>
-            <Icon
-              icon="mdi:close"
-              className="text-red-500 border-2 border-red-500 rounded-full p-2 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                autoSwipeHandler("left");
-              }}
-              size={35}
-            />
-          </motion.div>
-
-          {!disableSuperLike && (
-            <motion.div whileHover={iconHoverEffect}>
-              <Icon
-                icon="mdi:star"
-                className="text-blue-500 border-2 border-blue-500 rounded-full p-2 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  autoSwipeHandler("up");
-                }}
-                size={35}
-              />
-            </motion.div>
-          )}
-
-          <motion.div whileHover={iconHoverEffect}>
-            <Icon
-              icon="mdi:heart"
-              className="text-green-500 border-2 border-green-500 rounded-full p-2 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                autoSwipeHandler("right");
-              }}
-              size={35}
-            />
-          </motion.div>
-        </div>
+        <CardActions
+          autoSwipeHandler={autoSwipeHandler}
+          disableSuperLike={disableSuperLike}
+        />
       </div>
     </motion.div>
   );

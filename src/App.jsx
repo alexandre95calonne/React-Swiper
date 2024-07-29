@@ -1,5 +1,5 @@
 import React from "react";
-import Swiper from "./components/Swiper";
+import Swiper from "./components/swiper/Swiper";
 import data from "./data/data";
 
 function App() {
