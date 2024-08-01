@@ -127,13 +127,13 @@ const Card = ({
                 </motion.div>
               )}
             </div>
-            <CardDescription description={item.bio} />
+            <CardDescription description={item.description} />
           </div>
         ) : (
           <CardDetails
             title={item.name}
             subtitle={`${item.age} years old`}
-            description={item.bio}
+            description={item.description}
           />
         )}
         <CardActions
