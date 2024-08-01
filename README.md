@@ -1,3 +1,19 @@
-# ⏳ Swiper Component ⏳
+# 📦 React Tinder
 
-I'm building a tinder swiper component with React and Tailwind CSS 🔥
+Npm package for tinder swiper cards made with React, Framer Motion and Tailwind CSS. Simply
+
+## Demo
+
+...
+
+## Installation 
+
+```
+$ npm i react-tinder
+```
+
+## Usage
+
+```js
+...
+```
